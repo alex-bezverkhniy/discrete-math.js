@@ -1,0 +1,53 @@
+<html>
+	<head>
+        <script src="js/jquery-1.9.0.js" ></script>
+        <script src="js/painter.js" ></script>
+        <script src="js/prima.js" ></script>
+        <script>
+$(document).ready(function () {
+    var c = $('#myCanvas').get(0);
+    var ctx = c.getContext("2d");
+    var cityList =  $('#cityList');
+
+    var prima = new Prima(ctx);
+
+    prima.model['Aberdeen']     = {'Aberdeen':{weight:0,   x:300, y:100},'Edinburgh':{weight:120, x:400, y:200},'Fort William':{weight:147, x:400, y:300},'Glasgow':{weight:142, x:300, y:400},'Inverness':{weight:107, x:200 ,y:300},'Perth':{weight:81,  x:200, y:200}};
+    prima.model['Edinburgh']    = {'Aberdeen':{weight:120, x:300, y:100},'Edinburgh':{weight:0,   x:400, y:200},'Fort William':{weight:132, x:400, y:300},'Glasgow':{weight:42,  x:300, y:400},'Inverness':{weight:157, x:200 ,y:300},'Perth':{weight:45,  x:200, y:200}};
+    prima.model['Fort William'] = {'Aberdeen':{weight:147, x:300, y:100},'Edinburgh':{weight:132, x:400, y:200},'Fort William':{weight:0,   x:400, y:300},'Glasgow':{weight:108, x:300, y:400},'Inverness':{weight:66,  x:200 ,y:300},'Perth':{weight:105, x:200, y:200}};
+    prima.model['Glasgow']      = {'Aberdeen':{weight:142, x:300, y:100},'Edinburgh':{weight:42,  x:400, y:200},'Fort William':{weight:108, x:400, y:300},'Glasgow':{weight:0,   x:300, y:400},'Inverness':{weight:168, x:200 ,y:300},'Perth':{weight:61,  x:200, y:200}};
+    prima.model['Inverness']    = {'Aberdeen':{weight:107, x:300, y:100},'Edinburgh':{weight:157, x:400, y:200},'Fort William':{weight:66,  x:400, y:300},'Glasgow':{weight:168, x:300, y:400},'Inverness':{weight:0,   x:200 ,y:300},'Perth':{weight:112, x:200, y:200}};
+    prima.model['Perth']        = {'Aberdeen':{weight:81,  x:300, y:100},'Edinburgh':{weight:45,  x:400, y:200},'Fort William':{weight:105, x:400, y:300},'Glasgow':{weight:61,  x:300, y:400},'Inverness':{weight:112, x:200 ,y:300},'Perth':{weight:0,   x:200, y:200}};
+
+    for(k in prima.model) {
+        cityList
+            .append($("<option></option>")
+            .attr("value",k)
+            .text(k));
+    }
+
+    cityList.change(function(){
+        c.width = c.width;
+        prima.painter.color = '#f0f0f0';
+        prima.painter.fillColor = '#000';
+        prima.showGraph();
+        prima.painter.fillColor = '#f00';
+        prima.painter.color = '#ff0000';
+        var v = cityList.val();
+        if(v) {
+            prima.showAllPath(v, new Array());
+        }
+    });
+
+});
+        </script>
+</head>
+	<body style="font: 12px Arial;">
+        <h3>Finds short path by from selected city by all cities (complete graph)</h3>
+        <label for="cityList">Start from: </label>
+        <select id="cityList">
+            <option value=""> - </option>
+        </select></br>
+        <canvas id="myCanvas" width="800" height="600" style="border: 1px solid #000;">
+        </canvas>
+	</body>
+</html>

@@ -1,0 +1,52 @@
+<html>
+<head>
+    <script src="js/jquery-1.9.0.js" ></script>
+    <script src="js/painter.js" ></script>
+    <script src="js/life.js" ></script>
+    <script>
+$(document).ready(function () {
+    var width = 80;
+    var height = 60;
+
+    var model = new Array();
+
+    for(i = 0; i < height; i++) {
+        model[i] = new Array();
+        for(j = 0; j < width; j++) {
+            model[i][j]  = 0;
+        }
+    }
+
+
+    /*
+    model[0] = [0, 0, 0, 0, 0, 0, 0];
+    model[1] = [0, 1, 1, 0, 0, 0, 0];
+    model[2] = [0, 1, 0, 0, 0, 0, 0];
+    model[3] = [0, 0, 0, 0, 0, 0, 0];
+    model[4] = [0, 0, 0, 0, 0, 1, 1];
+    model[5] = [0, 0, 0, 0, 0, 1, 0];
+    */
+
+
+    this.life = new Life('myCanvas', model);
+
+    this.life.showGrid();
+    var self = this;
+    $('#startBtn').click(function(){
+        self.life.start();
+    });
+
+    $('#stopBtn').click(function(){
+
+    });
+});
+        </script>
+</head>
+<body style="font: 12px Arial;">
+<button id="startBtn">Start</button>
+<button id="stopBtn">Stop</button>
+<br/>
+<canvas id="myCanvas" width="800" height="600" style="border: 1px solid #000;">
+</canvas>
+</body>
+</html>

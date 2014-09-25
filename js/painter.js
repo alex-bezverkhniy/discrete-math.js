@@ -53,10 +53,10 @@ function Painter(ctx, font, color){
     }
 
     this.drawPoint = function(x, y, text){
+        this.drawCircle(x, y, 1);
         if(text) {
             this.drawText(text, x + 2, y - 2);
         }
-        this.drawCircle(x, y, 1);
     };
 
     this.drawCircle = function(x,y,r) {
@@ -71,7 +71,9 @@ function Painter(ctx, font, color){
     };
 
     this.middleCoordinate = function (startX, startY, endX, endY) {
-        return {x: ((startX  * 0.5) + (endX * 0.5)), y: ((startY * 0.5) + (endY * 0.5))}
+        var x = ((startX  * 0.5) + (endX * 0.5));
+        var y = ((startY * 0.5) + (endY * 0.5));
+        return {x: ((startX  * 0.5) + (x * 0.5)), y: ((startY * 0.5) + (y * 0.5))}
     }
 
     this.quarterCoordinate = function (startX, startY, endX, endY) {

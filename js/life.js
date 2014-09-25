@@ -81,11 +81,54 @@ Life = function(contextId, model) {
         this.fillCellsByModel();
         window.setInterval(function () {
             if(self.isLife) {
+
+                for(i = 0; i < self.model.length; i++) {
+                    for(j = 0; j < self.model[0].length; j++) {
+                        // this is live cell
+                        if(self.model[i][j] && self.model[i][j] > 0) {
+                            if(i - 1 > 0 && j -1 > 0 && i + 1 < self.model.length && j + 1 < self.model[0].length) {
+                                // finds count of live cells
+                                var countLiveCells = 0;
+
+                                if(self.model[i+1][j+1] > 0) {
+                                    countLiveCells++;
+                                }
+                                if(self.model[i+1][j] > 0) {
+                                    countLiveCells++;
+                                }
+                                if(self.model[i+1][j-1] > 0) {
+                                    countLiveCells++;
+                                }
+
+                                if(self.model[i][j+1] > 0) {
+                                    countLiveCells++;
+                                }
+                                if(self.model[i][j] > 0) {
+                                //    countLiveCells++;
+                                }
+                                if(self.model[i][j-1] > 0) {
+                                    countLiveCells++;
+                                }
+
+                                if(self.model[i-1][j+1] > 0) {
+                                    countLiveCells++;
+                                }
+                                if(self.model[i-1][j] > 0) {
+                                    countLiveCells++;
+                                }
+                                if(self.model[i-1][j-1] > 0) {
+                                    countLiveCells++;
+                                }
+                                console.log('countLiveCells: ' + countLiveCells);
+                            }
+                        }
+                    }
+                }
                 self.fillCellsByModel();
                 self.iterationCount++
                 console.log('num of iteration: ' + self.iterationCount);
             }
-        }, 3000); // repeat forever, polling every 3 seconds
+        }, 1000); // repeat forever, polling every 3 seconds
     }
 
     this.stop = function() {

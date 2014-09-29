@@ -5,8 +5,8 @@
     <script src="js/life.js" ></script>
     <script>
 $(document).ready(function () {
-    var width = 80;
-    var height = 60;
+    var width = 5;
+    var height = 5;
 
     var model = new Array();
 
@@ -31,6 +31,7 @@ $(document).ready(function () {
     this.life = new Life('myCanvas', model);
 
     this.life.showGrid();
+    this.life.iterationPause = 1000;
     var self = this;
     $('#startBtn').click(function(){
         self.life.start();

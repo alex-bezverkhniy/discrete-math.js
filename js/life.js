@@ -22,7 +22,6 @@ Life = function(contextId, model) {
        console.log('Mouse position: ' + i + ',' + j);
        if(i <= self.model.length && j <= self.model[0].length) {
            self.model[i][j] = self.model[i][j] == 0 ? 1 : 0;
-           //console.log('Model: ' + self.model);
            self.fillCellsByModel();
        }
 
@@ -58,13 +57,16 @@ Life = function(contextId, model) {
 
     this.showGrid = function() {
         canvas.width = canvas.width;
-        for(i = 0; i <= this.model[0].length; i++) {
-            // Horizontal line
-            this.drawLine(i*10+0.5, 0, i*10+0.5, this.model.length * this.cellWidth+0.1, 1, this.cellLineColor);
-        }
-        for(i = 0; i <= this.model.length; i++) {
-            // Vertical line
-            this.drawLine(0, i*10+0.5, this.model[0].length * this.cellWidth, i*10+0.5, 0.5, this.cellLineColor);
+        if(this.model[0]) {
+            for(i = 0; i <= this.model[0].length; i++) {
+                // Horizontal line
+                this.drawLine(i*10+0.5, 0, i*10+0.5, this.model.length * this.cellWidth+0.1, 1, this.cellLineColor);
+            }
+
+            for(i = 0; i <= this.model.length; i++) {
+                // Vertical line
+                this.drawLine(0, i*10+0.5, this.model[0].length * this.cellWidth, i*10+0.5, 0.5, this.cellLineColor);
+            }
         }
     }
 
@@ -76,30 +78,26 @@ Life = function(contextId, model) {
         context.beginPath();
         context.lineWidth = this.cellLineWidth;
         context.strokeStyle = this.cellLineColor;
-        //context.rect((x * this.cellWidth) + 0.5, (y * this.cellWidth) + 0.5, (x * this.cellWidth) + 0.25 + this.cellWidth, (y * this.cellWidth)  + 0.25 + this.cellWidth);
         context.rect(
             (x * this.cellWidth) + 0.5,
             (y * this.cellWidth) + 0.5,
             this.cellWidth,
             this.cellWidth
-            //(x * this.cellWidth) + 0.5 + this.cellWidth,
-            //(y * this.cellWidth) + 0.5 + this.cellWidth
             );
 
         context.fillStyle = this.backgroundColor;
         context.fill();
         context.stroke();
-        //this.drawCircle((x * this.cellWidth) - (this.cellWidth / 2) -  + 0.25, (y * this.cellWidth) - (this.cellWidth / 2) + 0.25, this.cellWidth / 2, this.backgroundColor, this.cellLineWidth, this.backgroundColor);
     }
 
     this.fillCellsByModel = function() {
         canvas.width = canvas.width;
-        for(i = 0; i < this.model.length; i++) {
-            for(j = 0; j < this.model[0].length; j++) {
-                if(model[i][j] && model[i][j] > 0) {
-                    this.fillCell(j+1, i+1);
+        for(i = 0; i < self.model.length; i++) {
+            for(j = 0; j < self.model[0].length; j++) {
+                if(self.model[i][j] && self.model[i][j] > 0) {
+                    self.fillCell(j+1, i+1);
                 } else {
-                    this.cleanCell(j, i);
+                    self.cleanCell(j, i);
                 }
             }
         }
@@ -109,73 +107,77 @@ Life = function(contextId, model) {
         // finds count of live cells
         var countLiveCells = 0;
 
-        var nextJ = (j+1 > self.model[0].length)? self.model[0].length : j+1;
-        var prevJ = (j-1 < 0) ? 0 : j-1;
-        var nextI = (i+1 > self.model.length)? self.model.length : i+1;
-        var prevI = (i-1 < 0) ? 0 : i-1;
+        var nextJ = (j + 1 > self.model[0].length - 1) ? 0 : j + 1;
+        var prevJ = (j - 1 < 0) ? self.model[0].length - 1 : j - 1;
+        var nextI = (i + 1 > self.model.length - 1)? 0 : i + 1;
+        var prevI = (i - 1 < 0) ? self.model.length - 1 : i - 1;
 
-        //if(i - 1 > 0 && j -1 > 0 && i + 1 < self.model.length && j + 1 < self.model[0].length) {
+        if(self.model[nextI][nextJ] > 0) {
+            countLiveCells++;
+        }
+        if(self.model[nextI][prevJ] > 0) {
+            countLiveCells++;
+        }
+        if(self.model[nextI][j] > 0) {
+            countLiveCells++;
+        }
+        if(self.model[prevI][j] > 0) {
+            countLiveCells++;
+        }
 
-            if(self.model[nextI][nextJ] > 0) {
-                countLiveCells++;
-            }
-            if(self.model[nextI][prevJ] > 0) {
-                countLiveCells++;
-            }
+        if(self.model[i][j] > 0) {
+        //    countLiveCells++;
+        }
 
-            if(self.model[nextI][j] > 0) {
-                countLiveCells++;
-            }
-            if(self.model[prevI][j] > 0) {
-                countLiveCells++;
-            }
+        if(self.model[i][nextJ] > 0) {
+            countLiveCells++;
+        }
+        if(self.model[i][prevJ] > 0) {
+            countLiveCells++;
+        }
 
-            if(self.model[i][j] > 0) {
-            //    countLiveCells++;
-            }
+        if(self.model[prevI][nextJ] > 0) {
+            countLiveCells++;
+        }
+        if(self.model[prevI][prevJ] > 0) {
+            countLiveCells++;
+        }
 
-            if(self.model[i][nextJ] > 0) {
-                countLiveCells++;
-            }
-            if(self.model[i][prevJ] > 0) {
-                countLiveCells++;
-            }
-
-            if(self.model[prevI][nextJ] > 0) {
-                countLiveCells++;
-            }
-            if(self.model[prevI][prevJ] > 0) {
-                countLiveCells++;
-            }
-        //}
         return countLiveCells;
     }
 
     this.start = function() {
         this.fillCellsByModel();
+        self.isLife = true;
         window.setInterval(function () {
             if(self.isLife) {
-
+                var m = new Array();
                 for(i = 0; i < self.model.length; i++) {
+                    m[i] = new Array();
                     for(j = 0; j < self.model[0].length; j++) {
                         var countLiveCells = getAliveCount(i, j);
-                        if(self.model[i][j] > 0){
-                            //console.log('countLiveCells: ' + countLiveCells);
-                            if(countLiveCells > 3) {
-                                self.model[i][j] = 0;
-                            }
-
-                            if(countLiveCells < 2) {
-                                self.model[i][j] = 0;
-                            }
-                        } else {
-                            //console.log('countLiveCells: ' + countLiveCells);
-                            if(countLiveCells == 3) {
-                                self.model[i][j] = 1;
-                            }
+                        m[i][j] = self.model[i][j];
+                        if(countLiveCells > 3 || countLiveCells < 2) {
+                            m[i][j] = 0
+                        }
+                        if(countLiveCells == 3) {
+                            m[i][j] = 1
                         }
                     }
                 }
+                self.model = m;
+                /*
+                console.log('old model');
+                for(i = 0; i < self.model.length; i++) {
+                    console.log(self.model[i]);
+                }
+                self.model = m;
+                console.log('new model');
+                for(i = 0; i < self.model.length; i++) {
+                    //console.log(m[i]);
+                    console.log(self.model[i]);
+                }
+                */
                 self.fillCellsByModel();
                 self.iterationCount++
                 console.log('num of iteration: ' + self.iterationCount);
